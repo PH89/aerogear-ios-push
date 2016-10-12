@@ -48,12 +48,14 @@ class AGClientDeviceInformationImpl: NSObject, AGClientDeviceInformation {
         return jsonObject;
     }
     
-    // Helper to transform the NSData-based token into a (useful) String:
+    // Helper to transform the Data-based token into a (useful) String:
     fileprivate func convertToString(_ deviceToken: Data?) -> String? {
-        if let token = deviceToken?.description {
-            return token.replacingOccurrences(of: "<", with: "")
-                .replacingOccurrences(of: ">", with: "")
-                .replacingOccurrences(of: " ", with: "")
+        if let token = deviceToken {
+            var deviceTokenString: String = ""
+            for i in 0..<token.count {
+                deviceTokenString += String(format: "%02.2hhx", token[i] as CVarArg)
+            }
+            return deviceTokenString;
         }
         
         return nil
